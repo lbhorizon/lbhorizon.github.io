@@ -547,6 +547,9 @@ html[lang="en"] .phases li:last-child::before { content: "Step 4, on request"; }
           Besoin: form.besoin.value, Message: form.message.value.trim() })
       });
       const j = await r.json().catch(() => ({}));
+      // Première demande reçue par FormSubmit : il envoie d'abord un email d'activation au destinataire.
+      if (/activat/i.test(j.message || "")) { console.log("FormSubmit :", j.message); return afficher("ko", langue === "en" ? "The form is being activated. Please try again in a few minutes." : "Le formulaire est en cours d'activation. Réessayez dans quelques minutes."); }
+      if (!(r.ok && String(j.success) !== "false")) console.log("FormSubmit :", r.status, j);
       if (r.ok && String(j.success) !== "false") { afficher("ok", langue === "en" ? "Thank you, your request has been sent. We will reply within two business days." : "Merci, votre demande est bien envoyée. Nous vous répondons sous deux jours ouvrés."); form.reset(); }
       else afficher("ko", langue === "en" ? "Sending failed. Please try again shortly." : "L'envoi n'a pas fonctionné. Réessayez dans un instant.");
     } catch { afficher("ko", langue === "en" ? "Sending failed. Please try again shortly." : "L'envoi n'a pas fonctionné. Réessayez dans un instant."); }
