@@ -542,7 +542,7 @@ html[lang="en"] .phases li:last-child::before { content: "Step 4, on request"; }
     try {
       const r = await fetch(`https://formsubmit.co/ajax/${EMAIL_RECEPTION}`, {
         method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ _subject: "Demande : " + form.besoin.value + " — " + form.entreprise.value.trim(), _template: "table",
+        body: JSON.stringify({ _subject: "Demande : " + form.besoin.value + " — " + form.entreprise.value.trim(), _template: "table", _replyto: form.email.value.trim(),
           Nom: form.nom.value.trim(), Email: form.email.value.trim(), Entreprise: form.entreprise.value.trim(),
           Besoin: form.besoin.value, Message: form.message.value.trim() })
       });
