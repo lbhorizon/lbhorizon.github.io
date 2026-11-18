@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>LB Horizon – Conseil, audit et pilotage SI</title>
+<meta content="L'expertise informatique au service de vos projets : conseil, audit et optimisation des systèmes d'information, pilotage de projets, développement et maintenance. Une équipe d'ingénieurs expérimentés, en Israël, en France, en Belgique, en Suisse et au Luxembourg." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<style>
+/* Cabinet d'audit et de conseil SI. Idée directrice : le rapport d'audit — des constats classés par criticité,
+   les chiffres clés surlignés au marqueur jaune, comme un auditeur annote un document. */
+:root {
+  --encre: #13202e;        /* texte, fonds sombres */
+  --encre-2: #1d2d3f;
+  --doux: #5a6676;
+  --fond: #eef1f4;         /* gris bleuté froid */
+  --papier: #ffffff;
+  --trait: #d9dfe6;
+  --marqueur: #ffd84d;     /* surligneur */
+  --critique: #c8372d;
+  --elevee: #d9822b;
+  --moyenne: #3f7fbf;
+  --ok: #2f8a5b;
+  --titre: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --encre: #e7edf4; --encre-2: #c9d3de; --doux: #9aa7b6; --fond: #0f1720; --papier: #16212d; --trait: #263445;
+    --marqueur: #e8c23a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --encre: #e7edf4; --encre-2: #c9d3de; --doux: #9aa7b6; --fond: #0f1720; --papier: #16212d; --trait: #263445;
+  --marqueur: #e8c23a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--fond); color: var(--encre); font: 17px/1.65 var(--titre); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--moyenne); outline-offset: 3px; border-radius: 4px; }
+.env { max-width: 1180px; margin-inline: auto; padding-inline: 20px; }
+/* Le trait de surligneur, utilisé avec parcimonie sur les chiffres et constats clés */
+mark { background: linear-gradient(transparent 12%, var(--marqueur) 12%, var(--marqueur) 88%, transparent 88%); color: #13202e; padding: 0 3px; border-radius: 2px; }
+
+/* En-tête */
+header { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--fond) 90%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--trait); }
+header .env { display: flex; align-items: center; gap: 28px; min-height: 66px; }
+.marque { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 17px; }
+.marque .nom { white-space: nowrap; }
+.marque svg { width: 28px; height: 28px; flex: none; }
+header nav { margin-inline-start: auto; display: flex; gap: 26px; }
+header nav a { color: var(--doux); text-decoration: none; font-weight: 500; font-size: 15px; }
+header nav a:hover { color: var(--encre); }
+.bouton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 24px; border-radius: 8px; font: 600 16px var(--titre); text-decoration: none; cursor: pointer; border: 1.5px solid transparent; }
+.bouton.plein { background: var(--encre); color: var(--fond); }
+.bouton.plein:hover { background: var(--encre-2); }
+.bouton.ligne { border-color: var(--encre); color: var(--encre); background: transparent; }
+header .bouton { min-height: 40px; padding: 0 16px; font-size: 15px; }
+
+/* Accueil */
+.hero .env { display: grid; grid-template-columns: 1fr 1.05fr; gap: 64px; align-items: center; padding-block: 76px 92px; }
+.hero h1 { font-size: clamp(40px, 5.2vw, 66px); font-weight: 700; letter-spacing: -0.03em; }
+.hero .chapo { font-size: 19.5px; color: var(--doux); margin: 24px 0 32px; max-width: 31em; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.zones { margin-top: 26px; font-size: 15px; color: var(--doux); }
+.surtitre { font-family: var(--mono); font-size: 14px; color: var(--doux); margin: 0 0 18px; letter-spacing: 0.02em; }
+.hero .chapo { font-size: 18px; }
+.hero .chapo p { margin: 0 0 14px; }
+.hero .chapo .accroche { font-size: 21px; color: var(--encre); font-weight: 500; }
+.hero .chapo .equipe-ligne { color: var(--encre); font-weight: 600; margin-bottom: 0; }
+.tete .accroche { font-size: 20px; color: var(--encre); font-weight: 500; }
+.exemples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.exemples article { background: var(--papier); border: 1px solid var(--trait); border-radius: 10px; padding: 24px 26px; }
+.exemples h3 { font-size: 19px; margin-bottom: 8px; }
+.exemples p { margin: 0 0 12px; color: var(--doux); }
+.exemples .resultat { margin: 0; color: var(--encre); border-inline-start: 3px solid var(--marqueur); padding-inline-start: 12px; }
+
+/* Extrait de rapport d'audit */
+.rapport { background: var(--papier); border: 1px solid var(--trait); border-radius: 6px; box-shadow: 0 1px 0 var(--trait), 0 30px 60px -36px rgba(19,32,46,0.45); position: relative; }
+.rapport::before { content: ""; position: absolute; inset: 10px -10px -10px 10px; background: var(--papier); border: 1px solid var(--trait); border-radius: 6px; z-index: -1; }
+.rapport-tete { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 18px 22px 14px; border-bottom: 1px solid var(--trait); }
+.rapport-tete b { font-size: 15px; }
+.rapport-tete span { font-size: 13px; color: var(--doux); }
+.constat { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; padding: 16px 22px; border-bottom: 1px solid var(--trait); }
+.constat:last-of-type { border-bottom: 0; }
+.niveau { grid-row: span 2; align-self: start; font-size: 12.5px; font-weight: 600; padding: 3px 9px; border-radius: 4px; color: #fff; min-width: 72px; text-align: center; margin-top: 2px; }
+.niveau.c { background: var(--critique); } .niveau.e { background: var(--elevee); } .niveau.m { background: var(--moyenne); }
+.constat h3 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.4; }
+.constat p { font-size: 14.5px; color: var(--doux); }
+.constat code { font: 500 13px var(--mono); background: var(--fond); padding: 1px 6px; border-radius: 3px; color: var(--encre); }
+.rapport-pied { padding: 12px 22px; font-size: 12.5px; color: var(--doux); border-top: 1px dashed var(--trait); }
+
+/* Feuille de route d'une mission (accueil) */
+.mission { list-style: none; margin: 0; padding: 8px 22px; display: grid; }
+.mission li { display: grid; grid-template-columns: 26px 1fr; column-gap: 12px; padding: 12px 0; position: relative; }
+.mission li::before { content: ""; grid-row: span 2; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--trait); background: var(--papier); margin-top: 2px; position: relative; z-index: 1; }
+.mission li:not(:last-child)::after { content: ""; position: absolute; left: 10px; top: 32px; bottom: -12px; border-left: 2px solid var(--trait); }
+.mission li.fait::before { background: var(--ok); border-color: var(--ok); box-shadow: inset 0 0 0 3px var(--papier); }
+.mission li.encours::before { border-color: var(--elevee); box-shadow: 0 0 0 4px color-mix(in srgb, var(--elevee) 25%, transparent); }
+.mission b { font-size: 15.5px; }
+.mission li.encours b::after { content: "En cours"; margin-inline-start: 8px; font-size: 12px; font-weight: 600; color: #fff; background: var(--elevee); padding: 1px 7px; border-radius: 4px; vertical-align: 2px; }
+.mission span { font-size: 14px; color: var(--doux); }
+
+/* Présentation générale */
+.presentation { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: start; }
+.presentation h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; letter-spacing: -0.025em; }
+.presentation > div { display: grid; gap: 16px; font-size: 18px; color: var(--doux); }
+
+/* Nos interventions */
+.actions-grille { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.actions-grille article { background: var(--papier); border: 1px solid var(--trait); border-radius: 8px; padding: 26px; display: grid; gap: 10px; align-content: start; }
+.actions-grille article:first-child, .actions-grille article:nth-child(2) { border-top: 4px solid var(--encre); }
+.actions-grille h3 { font-size: 21px; }
+.actions-grille .quand { font-weight: 500; color: var(--encre); font-size: 15.5px; padding-inline-start: 12px; border-inline-start: 3px solid var(--marqueur); }
+.actions-grille p { color: var(--doux); font-size: 15.5px; }
+
+/* Symptômes */
+.symptomes { background: var(--encre); color: #e7edf4; }
+.symptomes .env { padding-block: 84px; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; }
+.symptomes h2 { font-size: clamp(30px, 3.6vw, 44px); color: #fff; }
+.symptomes > .env > div > p { color: #9aa7b6; margin-top: 14px; font-size: 18px; }
+.liste-symptomes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+.liste-symptomes li { padding: 15px 0 15px 26px; border-top: 1px solid rgba(255,255,255,0.12); position: relative; }
+.liste-symptomes li::before { content: ""; position: absolute; inset-inline-start: 0; top: 24px; width: 12px; height: 3px; background: var(--marqueur); border-radius: 2px; }
+
+section { padding-block: 104px; }
+.tete { max-width: 44em; margin-bottom: 52px; display: grid; gap: 14px; }
+.tete h2 { font-size: clamp(32px, 4vw, 50px); font-weight: 700; letter-spacing: -0.025em; }
+.tete p { font-size: 18.5px; color: var(--doux); }
+
+/* Catalogue : les cinq domaines (A à E, comme dans le catalogue) */
+.catalogue { display: grid; }
+.domaine { display: grid; grid-template-columns: 80px 1fr 1fr; gap: 28px; padding: 34px 0; border-top: 1px solid var(--trait); align-items: start; }
+.domaine:last-child { border-bottom: 1px solid var(--trait); }
+.lettre { font-size: 46px; font-weight: 700; line-height: 1; color: var(--doux); letter-spacing: -0.04em; }
+.domaine h3 { font-size: 24px; margin-bottom: 8px; }
+.domaine .pour { color: var(--doux); }
+.domaine ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 15.5px; }
+.domaine li { padding-inline-start: 18px; position: relative; }
+.domaine li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.72em; width: 8px; height: 2px; background: var(--encre); }
+.livrables { margin-top: 14px; font-size: 14.5px; color: var(--doux); }
+.livrables b { color: var(--encre); font-weight: 600; }
+
+/* Formules d'audit */
+#formules { background: var(--papier); border-block: 1px solid var(--trait); }
+.formules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--trait); border-radius: 8px; overflow: hidden; }
+.formule { padding: 30px 26px; display: grid; gap: 12px; align-content: start; border-inline-start: 1px solid var(--trait); }
+.formule:first-child { border-inline-start: 0; }
+.formule .pour { font-size: 15px; color: var(--doux); }
+.formule h3 { font-size: 23px; }
+.formule ul { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 15.5px; }
+.formule li { padding-inline-start: 24px; position: relative; }
+.formule li::before { content: ""; position: absolute; inset-inline-start: 2px; top: 0.5em; width: 10px; height: 6px; border-left: 2px solid var(--ok); border-bottom: 2px solid var(--ok); transform: rotate(-45deg); }
+.formule.recommande { background: color-mix(in srgb, var(--marqueur) 14%, var(--papier)); }
+.formule .badge { justify-self: start; font-size: 13px; font-weight: 600; background: var(--marqueur); color: #13202e; padding: 2px 10px; border-radius: 4px; }
+.formats { margin-top: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.formats div { display: grid; gap: 4px; }
+.formats b { font-size: 16px; }
+.formats span { color: var(--doux); font-size: 15px; }
+
+/* Méthode : 4 phases */
+.phases { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: ph; }
+.phases li { padding: 0 24px 0 0; display: grid; gap: 8px; align-content: start; }
+.phases li::before { counter-increment: ph; content: "Étape " counter(ph); font-size: 14px; font-weight: 600; color: var(--doux); padding-bottom: 14px; margin-bottom: 8px; border-bottom: 3px solid var(--encre); }
+.phases li:last-child::before { content: "Étape 4, à la demande"; border-bottom-style: dashed; }
+.phases h3 { font-size: 20px; }
+.phases p { color: var(--doux); font-size: 15.5px; }
+
+/* Compétences */
+#competences { background: var(--papier); border-block: 1px solid var(--trait); }
+.competences { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 28px; }
+.competences h3 { font-size: 15px; color: var(--doux); font-weight: 600; margin-bottom: 12px; }
+.puces { display: flex; flex-wrap: wrap; gap: 8px; }
+.puces span { border: 1px solid var(--trait); background: var(--fond); border-radius: 4px; padding: 5px 11px; font-size: 15px; font-weight: 500; }
+.reseau { margin-top: 36px; color: var(--doux); max-width: 50em; }
+
+/* Équipe et engagements */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.fondateurs { display: grid; gap: 16px; }
+.fondateur { display: grid; grid-template-columns: 64px 1fr; gap: 18px; padding: 22px; background: var(--papier); border: 1px solid var(--trait); border-radius: 8px; }
+.initiales { width: 64px; height: 64px; border-radius: 6px; background: var(--encre); color: var(--fond); display: grid; place-items: center; font-weight: 700; font-size: 20px; }
+.fondateur h3 { font-size: 19px; }
+.fondateur .role { font-size: 14.5px; color: var(--doux); margin: 2px 0 8px; font-weight: 500; }
+.fondateur p { font-size: 15.5px; color: var(--doux); }
+.engagements { list-style: none; margin: 0; padding: 0; display: grid; }
+.engagements li { padding: 16px 0; border-top: 1px solid var(--trait); display: grid; gap: 2px; }
+.engagements li:last-child { border-bottom: 1px solid var(--trait); }
+.engagements b { font-weight: 600; }
+.engagements span { color: var(--doux); font-size: 15.5px; }
+
+/* Contact */
+#contact { background: var(--encre); color: #e7edf4; }
+.contact { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start; }
+#contact h2 { color: #fff; }
+#contact .tete p { color: #9aa7b6; }
+.promesses { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; color: #c9d3de; }
+.promesses li { padding-inline-start: 24px; position: relative; }
+.promesses li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.7em; width: 12px; height: 3px; background: var(--marqueur); border-radius: 2px; }
+form { background: #ffffff; color: #13202e; border-radius: 8px; padding: 30px; display: grid; gap: 16px; }
+.deux { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.champ { display: grid; gap: 6px; }
+label { font-weight: 500; font-size: 14.5px; }
+.req { color: var(--critique); }
+input, select, textarea { font: 16px var(--titre); color: #13202e; background: #f3f5f8; border: 1px solid #cfd7e0; border-radius: 6px; padding: 11px 13px; width: 100%; min-height: 48px; }
+textarea { min-height: 100px; resize: vertical; }
+input:focus, select:focus, textarea:focus { border-color: #13202e; outline: 2px solid rgba(19,32,46,0.15); outline-offset: 0; }
+.accord { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: #5a6676; font-weight: 400; }
+.accord input { width: 20px; min-height: 20px; margin-top: 3px; flex: none; accent-color: #13202e; }
+.piege { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.retour { border-radius: 6px; padding: 13px 15px; font-size: 15px; }
+.retour.ok { background: #e6f3ec; }
+.retour.ko { background: #fbeae6; }
+.erreur-champ input { border-color: var(--critique); }
+form .bouton.plein { background: #13202e; color: #fff; }
+
+footer .env { padding-block: 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; font-size: 14.5px; color: var(--doux); }
+footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--encre); }
+
+@media (max-width: 1000px) {
+  header nav { display: none; }
+  header .bouton { margin-inline-start: auto; }
+  .hero .env, .symptomes .env, .duo, .contact, .presentation { grid-template-columns: 1fr; }
+  .presentation { gap: 20px; }
+  .hero .env { gap: 48px; padding-block: 48px 72px; }
+  .domaine { grid-template-columns: 56px 1fr; }
+  .domaine > ul { grid-column: 2; }
+  .formules, .formats { grid-template-columns: 1fr; }
+  .formule { border-inline-start: 0; border-top: 1px solid var(--trait); }
+  .formule:first-child { border-top: 0; }
+  .phases { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+  .competences { grid-template-columns: 1fr 1fr; }
+  .exemples { grid-template-columns: 1fr; }
+  section { padding-block: 72px; }
+}
+@media (max-width: 600px) {
+  .liste-symptomes, .phases, .competences, .deux, .actions-grille { grid-template-columns: 1fr; }
+  .hero .actions .bouton { width: 100%; }
+  .domaine { grid-template-columns: 1fr; gap: 10px; }
+  .domaine > ul { grid-column: auto; }
+  .lettre { font-size: 34px; }
+  .rapport::before { display: none; }
+  .constat { grid-template-columns: 1fr; }
+  .niveau { grid-row: auto; justify-self: start; }
+  form { padding: 22px; }
+}
+
+/* Choix de la langue */
+.langue { display: flex; border: 1px solid var(--trait); border-radius: 6px; padding: 2px; }
+.langue button { border: 0; background: none; color: var(--doux); font: 600 13px var(--titre); padding: 6px 10px; border-radius: 4px; cursor: pointer; min-height: 32px; }
+.langue button[aria-pressed="true"] { background: var(--encre); color: var(--fond); }
+html[lang="en"] .mission li.encours b::after { content: "In progress"; }
+html[lang="en"] .phases li::before { content: "Step " counter(ph); }
+html[lang="en"] .phases li:last-child::before { content: "Step 4, on request"; }
+@media (max-width: 1000px) { header .langue { margin-inline-start: auto; } header .bouton { margin-inline-start: 0; } }
+</style>
+</head>
+<body>
+<header>
+<div class="env">
+<a aria-label="Accueil" class="marque" href="#haut">
+<svg aria-hidden="true" viewbox="0 0 28 28"><rect fill="none" height="26" rx="5" stroke="currentColor" stroke-width="2" width="26" x="1" y="1"></rect><path d="M7 10h14M7 15h9M7 20h6" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path><rect fill="#ffd84d" height="5" rx="1" width="8" x="15" y="12.5"></rect></svg>
+<span class="nom" data-i="0">LB Horizon</span>
+</a>
+<nav aria-label="Menu" data-i="1"><a href="#interventions">Nos interventions</a> <a href="#offres">Audits</a> <a href="#exemples">Exemples</a> <a href="#equipe">Qui sommes-nous</a></nav>
+<div class="langue" role="group" aria-label="Langue / Language"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+<a class="bouton plein" href="#contact" data-i="2">Nous contacter</a>
+</div>
+</header>
+<main id="haut">
+<div class="hero">
+<div class="env">
+<div>
+<p class="surtitre" data-i="3">Conseil · Audit · Pilotage · Développement</p>
+<h1 data-i="4">Vos projets et vos systèmes d'information, entre de bonnes mains.</h1>
+<div class="chapo">
+<p class="accroche" data-i="5">Nous accompagnons les entreprises dans la conception, le pilotage et l'évolution de leurs projets informatiques.</p>
+<p data-i="6">De la définition des besoins à la mise en œuvre, nous apportons notre expertise à chaque étape : pilotage de projets, audit et optimisation des systèmes d'information, développement d'applications sur mesure, intégration et maintenance.</p>
+<p data-i="7">Notre approche associe expertise technique, vision métier et accompagnement opérationnel pour concevoir des solutions fiables, performantes et durables.</p>
+<p class="equipe-ligne" data-i="8">Une équipe d'ingénieurs expérimentés, avec plus de 20 ans d'expérience chacun.</p>
+</div>
+<div class="actions" data-i="9"><a class="bouton plein" href="#contact">Parler de votre projet</a> <a class="bouton ligne" href="#interventions">Nos interventions</a></div>
+<p class="zones" data-i="10">Pour les entreprises francophones, en Israël, en France, en Belgique, en Suisse et au Luxembourg. Interventions à distance ou sur site selon les besoins.</p>
+</div>
+<div aria-label="Exemple de feuille de route d'une mission" class="rapport">
+<div class="rapport-tete" data-i="11"><b>Mission : évolution du CRM</b><span>Feuille de route</span></div>
+<ol class="mission">
+<li class="fait" data-i="12"><b>État des lieux</b><span>Existant analysé, <mark>14 axes d'amélioration</mark> identifiés</span></li>
+<li class="fait" data-i="13"><b>Recommandations</b><span>Plan d'action priorisé, validé par la direction</span></li>
+<li class="encours" data-i="14"><b>Optimisation du projet</b><span>Périmètre priorisé, planning maîtrisé, <mark>budget tenu</mark></span></li>
+<li data-i="15"><b>Pilotage et recette</b><span>Coordination des prestataires, tests avec les utilisateurs</span></li>
+<li data-i="16"><b>Mise en service et suivi</b><span>Déploiement, formation, maintenance</span></li>
+</ol>
+<p class="rapport-pied" data-i="17">Exemple illustratif d'une mission accompagnée de bout en bout.</p>
+</div>
+</div>
+</div>
+<section id="presentation" style="padding-bottom:0">
+<div class="env presentation">
+<h2 data-i="18">Le lien entre vos métiers et la technique</h2>
+<div>
+<p data-i="19">La réussite d'un projet informatique repose sur une bonne compréhension des enjeux métier, une vision claire des objectifs et une coordination efficace entre les différents intervenants.</p>
+<p data-i="20">Notre rôle est de faire le lien entre vos équipes, vos besoins et les solutions techniques. Nous analysons votre environnement, identifions les opportunités d'amélioration et vous accompagnons dans vos décisions.</p>
+<p data-i="21">De la réflexion initiale à la mise en œuvre, nous apportons une expertise indépendante, une vision globale et des livrables concrets.</p>
+<p data-i="22">Nous intervenons ponctuellement ou dans la durée, en complément de vos équipes.</p>
+</div>
+</div>
+</section>
+<section id="interventions">
+<div class="env">
+<div class="tete">
+<h2 data-i="23">Nos interventions</h2>
+<p data-i="24">Les principales prestations que nous menons, seules ou enchaînées selon vos besoins.</p>
+</div>
+<div class="actions-grille">
+<article><h3 data-i="25">Optimisation et pilotage de projet</h3><p class="quand" data-i="26">Votre projet a besoin d'un nouvel élan pour tenir ses délais, son budget et ses objectifs.</p><p data-i="27">Nous faisons le point sur l'avancement, les risques et les écarts, puis nous proposons un plan pour retrouver une vision claire et maîtrisée : périmètre, priorités, planning, organisation.</p></article><article><h3 data-i="28">Direction et pilotage de projet</h3><p class="quand" data-i="29">Vous souhaitez confier la conduite d'un projet à des chefs de projet expérimentés.</p><p data-i="30">Nous pilotons pour vous : planning, coordination des prestataires et des équipes, suivi du budget, recette, déploiement et formation des utilisateurs.</p></article><article><h3 data-i="31">Audit et optimisation des systèmes</h3><p class="quand" data-i="32">Vous souhaitez une vision claire et indépendante de votre système avant de décider.</p><p data-i="33">Audit de bases de données, de CRM Salesforce et d'applications : nous analysons l'existant, qualifions les constats et remettons un plan d'action priorisé.</p></article><article><h3 data-i="34">Conception et cadrage de projet</h3><p class="quand" data-i="35">Vous lancez un nouveau projet et voulez le construire sur des bases solides.</p><p data-i="36">Recueil des besoins, spécifications fonctionnelles, choix de la solution ou du prestataire, estimation des charges et des risques.</p></article><article><h3 data-i="37">Migration et sécurisation des données</h3><p class="quand" data-i="38">Vous préparez un changement d'outil, de base de données ou de prestataire.</p><p data-i="39">Migration préparée et sécurisée : analyse des flux, préparation et contrôle des données, bascule maîtrisée et cohérence garantie entre l'ancien et le nouveau système.</p></article><article><h3 data-i="40">Développement et innovation</h3><p class="quand" data-i="41">Vous avez besoin d'une application, d'un outil interne ou d'un prototype.</p><p data-i="42">Applications web en Python et Django, procédures SQL, intégrations entre logiciels. Un POC en 2 à 4 semaines, un MVP en 6 à 12 semaines.</p></article><article><h3 data-i="43">Maintenance et évolution des applications</h3><p class="quand" data-i="44">Vous voulez des applications fiables, performantes et qui évoluent avec vos besoins.</p><p data-i="45">Maintenance corrective et évolutive, assistance aux utilisateurs, résolution d'incidents et suivi des performances, par contrat mensuel.</p></article>
+</div>
+</div>
+</section>
+<div class="symptomes">
+<div class="env">
+<div>
+<h2 data-i="46">Quand faire appel à nous</h2>
+<p data-i="47">À chaque étape de la vie de vos projets et de vos systèmes d'information, nous vous apportons l'expertise et l'accompagnement nécessaires.</p>
+</div>
+<ul class="liste-symptomes">
+<li data-i="48">Vous souhaitez optimiser le pilotage d'un projet informatique.</li><li data-i="49">Vous recherchez une expertise indépendante pour évaluer votre système d'information.</li><li data-i="50">Vous souhaitez faire évoluer votre CRM ou votre ERP.</li><li data-i="51">Vous préparez une migration ou une modernisation de vos applications.</li><li data-i="52">Vous souhaitez améliorer les performances et la fiabilité de vos bases de données.</li><li data-i="53">Vous avez besoin d'un accompagnement pour développer une application spécifique.</li><li data-i="54">Vous souhaitez renforcer ponctuellement vos équipes avec des compétences expérimentées.</li><li data-i="55">Vous recherchez un partenaire pour assurer la maintenance et l'évolution de vos applications.</li>
+</ul>
+</div>
+</div>
+<section id="offres">
+<div class="env">
+<div class="tete">
+<h2 data-i="56">Nos audits en détail</h2>
+<p class="accroche" data-i="57">Une vision claire et indépendante de votre système d'information.</p>
+<p data-i="58">Nous réalisons des audits techniques et fonctionnels pour évaluer vos applications, vos bases de données et vos outils métiers. Chaque intervention permet d'identifier les points forts, les axes d'amélioration et les opportunités d'optimisation, puis de définir une feuille de route concrète et priorisée.</p>
+<p data-i="59">Nos recommandations sont conçues pour être directement exploitables par vos équipes ou mises en œuvre avec notre accompagnement.</p>
+</div>
+<div class="catalogue">
+<div class="domaine">
+<div class="lettre" data-i="60">A</div>
+<div><h3 data-i="61">Audit des bases de données</h3><p class="pour" data-i="62">Pour les applications qui reposent sur PostgreSQL, SQL Server ou Oracle.</p><p class="livrables" data-i="63"><b>Livrables :</b> rapport, cartographie des risques, points d'amélioration qualifiés, plan d'optimisation chiffré.</p></div>
+<ul><li data-i="64">Structure et modèle de données</li><li data-i="65">Qualité des données : doublons, incohérences, valeurs manquantes</li><li data-i="66">Performance : requêtes, index, plans d'exécution</li><li data-i="67">Sécurité et gouvernance : comptes, privilèges, sauvegardes</li><li data-i="68">Migrations et flux de données (ETL)</li></ul>
+</div>
+<div class="domaine">
+<div class="lettre" data-i="69">B</div>
+<div><h3 data-i="70">Audit Salesforce et CRM</h3><p class="pour" data-i="71">Pour les équipes qui souhaitent faire évoluer et optimiser leur CRM.</p><p class="livrables" data-i="72"><b>Livrables :</b> diagnostic, points d'amélioration, plan de mise en conformité ou d'optimisation.</p></div>
+<ul><li data-i="73">Configuration, profils, rôles et permissions</li><li data-i="74">Workflows, flows et automatisations</li><li data-i="75">Qualité des données commerciales</li><li data-i="76">Pipeline, indicateurs et adoption de l'outil</li><li data-i="77">Licences et fonctions sous-utilisées</li></ul>
+</div>
+<div class="domaine">
+<div class="lettre" data-i="78">C</div>
+<div><h3 data-i="79">Audit des applications et du système d'information</h3><p class="pour" data-i="80">Pour disposer d'une vision claire d'une application avant de la faire évoluer ou de la migrer.</p><p class="livrables" data-i="81"><b>Livrables :</b> rapport technique, dette technique identifiée, feuille de route de modernisation.</p></div>
+<ul><li data-i="82">Architecture et revue de code</li><li data-i="83">Configuration, accès et gestion des secrets</li><li data-i="84">Sauvegardes et reprise après incident</li><li data-i="85">Choix technologiques et préparation de migration</li></ul>
+</div>
+</div>
+</div>
+</section>
+<section id="formules">
+<div class="env">
+<div class="tete">
+<h2 data-i="86">Trois formules d'audit</h2>
+<p data-i="87">Chaque audit est proposé au forfait, avec un périmètre et un prix connus à l'avance.</p>
+</div>
+<div class="formules">
+<div class="formule">
+<p class="pour" data-i="88">Obtenir une première vision de votre environnement.</p>
+<h3 data-i="89">Diagnostic initial</h3>
+<ul><li data-i="90">Entretien de cadrage</li><li data-i="91">Première analyse du périmètre</li><li data-i="92">Principaux enjeux identifiés</li><li data-i="93">Restitution synthétique</li></ul>
+</div>
+<div class="formule recommande">
+<span class="badge" data-i="94">Notre accompagnement complet</span>
+<p class="pour" data-i="95">Disposer d'une analyse détaillée pour prendre les bonnes décisions.</p>
+<h3 data-i="96">Audit approfondi</h3>
+<ul><li data-i="97">Analyse technique détaillée</li><li data-i="98">Constats identifiés et qualifiés</li><li data-i="99">Rapport complet et recommandations hiérarchisées</li><li data-i="100">Réunion de restitution</li></ul>
+</div>
+<div class="formule">
+<p class="pour" data-i="101">Bénéficier d'un accompagnement jusqu'à la mise en œuvre des améliorations.</p>
+<h3 data-i="102">Audit et accompagnement</h3>
+<ul><li data-i="103">L'audit approfondi</li><li data-i="104">Plan d'amélioration</li><li data-i="105">Assistance à la mise en œuvre</li><li data-i="106">Vérification des résultats</li></ul>
+</div>
+</div>
+<div class="formats">
+<div data-i="107"><b>Au forfait</b><span>Un périmètre défini, des livrables identifiés et un budget maîtrisé.</span></div>
+<div data-i="108"><b>En régie</b><span>Des compétences expérimentées mobilisées selon vos besoins, ponctuellement ou dans la durée.</span></div>
+<div data-i="109"><b>Par abonnement</b><span>Un accompagnement régulier pour la maintenance, le support et le suivi de vos applications.</span></div>
+</div>
+</div>
+</section>
+<section id="exemples">
+<div class="env">
+<div class="tete">
+<h2 data-i="110">Exemples de missions</h2>
+<p data-i="111">Des missions représentatives de ce que nous menons, présentées sans information confidentielle.</p>
+</div>
+<div class="exemples">
+<article><h3 data-i="112">Audit Salesforce</h3><p data-i="113">Revue des profils et des droits, des automatisations et de la qualité des données commerciales, puis plan d'optimisation priorisé.</p><p class="resultat" data-i="114"><b>Résultat visé :</b> des données fiables, des droits maîtrisés et un outil mieux adopté par les équipes.</p></article>
+<article><h3 data-i="115">Optimisation SQL</h3><p data-i="116">Analyse des requêtes et des plans d'exécution, revue des index et des procédures sur une base PostgreSQL, SQL Server ou Oracle.</p><p class="resultat" data-i="117"><b>Résultat visé :</b> des temps de réponse nettement améliorés et une base plus stable.</p></article>
+<article><h3 data-i="118">Développement Django</h3><p data-i="119">Conception et développement d'une application métier web en Python et Django, du prototype à la mise en production.</p><p class="resultat" data-i="120"><b>Résultat visé :</b> des processus simplifiés et des données centralisées.</p></article>
+<article><h3 data-i="121">Pilotage de migration</h3><p data-i="122">Préparation, contrôle et bascule des données vers un nouvel outil, avec coordination des prestataires et des utilisateurs.</p><p class="resultat" data-i="123"><b>Résultat visé :</b> une bascule maîtrisée, des données cohérentes et des risques réduits.</p></article>
+</div>
+</div>
+</section>
+<section id="methode">
+<div class="env">
+<div class="tete"><h2 data-i="124">Notre façon de travailler</h2><p data-i="125">Une méthodologie structurée et pragmatique, adaptée à chaque mission, de l'analyse initiale à la mise en œuvre des solutions.</p></div>
+<ol class="phases">
+<li><h3 data-i="126">Comprendre</h3><p data-i="127">Vos objectifs, vos contraintes, votre organisation : le périmètre, les livrables et le calendrier sont validés ensemble.</p></li>
+<li><h3 data-i="128">Analyser</h3><p data-i="129">Entretiens, documents, systèmes : nous établissons un état des lieux factuel et identifions les enjeux.</p></li>
+<li><h3 data-i="130">Recommander</h3><p data-i="131">Des recommandations hiérarchisées et un plan d'action réaliste, présentés à vos décideurs.</p></li>
+<li><h3 data-i="132">Accompagner</h3><p data-i="133">Pilotage, mise en œuvre, vérification des résultats et suivi dans la durée, si vous le souhaitez.</p></li>
+</ol>
+</div>
+</section>
+<section id="competences">
+<div class="env">
+<div class="tete"><h2 data-i="134">Nos domaines d'expertise</h2><p data-i="135">Nous intervenons sur des environnements existants et savons faire dialoguer des technologies différentes.</p></div>
+<div class="competences">
+<div><h3 data-i="136">Bases de données et architecture</h3><div class="puces" data-i="137"><span>PostgreSQL</span><span>SQL Server</span><span>Oracle</span><span>SQL et PL/SQL</span></div></div>
+<div><h3 data-i="138">CRM et ERP</h3><div class="puces" data-i="139"><span>Salesforce</span><span>ERP retail</span><span>Intégration de solutions métiers</span></div></div>
+<div><h3 data-i="140">Développement logiciel</h3><div class="puces" data-i="141"><span>Python</span><span>Django</span><span>Applications web et SaaS</span></div></div>
+<div><h3 data-i="142">Data et Business Intelligence</h3><div class="puces" data-i="143"><span>ETL</span><span>QlikView</span><span>Reporting et pilotage des données</span></div></div>
+<div><h3 data-i="144">Gestion de projets informatiques</h3><div class="puces" data-i="145"><span>Cadrage</span><span>Coordination</span><span>Pilotage</span><span>Déploiement</span><span>Accompagnement</span></div></div>
+</div>
+</div>
+</section>
+<section id="equipe">
+<div class="env duo">
+<div>
+<div class="tete" style="margin-bottom:28px">
+<h2 data-i="146">Qui sommes-nous</h2>
+<p class="accroche" data-i="147">Une équipe d'ingénieurs expérimentés au service de vos projets informatiques.</p>
+<p data-i="148">Nous réunissons des compétences complémentaires en ingénierie logicielle, gestion de projets, bases de données et systèmes d'information. Avec plus de 20 ans d'expérience chacun, nous avons accompagné des entreprises dans des secteurs variés : santé, distribution, finance et services.</p>
+<p data-i="149">Notre force repose sur une double expertise : une solide maîtrise technique et une compréhension concrète des enjeux opérationnels des entreprises. Nous travaillons également avec un réseau de développeurs et de spécialistes qualifiés pour mobiliser les compétences adaptées à chaque projet.</p>
+</div>
+<div class="fondateurs">
+<div class="fondateur"><div aria-hidden="true" class="initiales" data-i="150">MB</div><div><h3 data-i="151">Moïse Berrebi</h3><p class="role" data-i="152">Chef de projet SI, bases de données et applications</p><p data-i="153">Plus de 20 ans de projets informatiques dans la santé et la distribution : pilotage de projets et de déploiements, analyse fonctionnelle, mise en place d'ERP et de CRM Salesforce, bases de données et BI. Développeur Python et Django.</p></div></div>
+<div class="fondateur"><div aria-hidden="true" class="initiales" data-i="154">EL</div><div><h3 data-i="155">Eliahou Lasry</h3><p class="role" data-i="156">Ingénierie logicielle et développement</p><p data-i="157">Plus de 30 ans d'expérience en ingénierie logicielle, dont les 11 dernières années chez Séphira, aujourd'hui intégrée au groupe Orisha, éditeur de logiciels pour les professionnels de santé. Spécialiste de la conception et du développement de solutions informatiques complexes, avec une exigence constante de fiabilité, de performance et d'innovation.</p></div></div>
+</div>
+</div>
+<div>
+<div class="tete" style="margin-bottom:28px"><h2 data-i="158">Nos engagements</h2></div>
+<ul class="engagements">
+<li data-i="159"><b>Un cadre d'intervention transparent</b><span>Périmètre, autorisations, responsabilités et règles de traitement des données définis par contrat.</span></li>
+<li data-i="160"><b>Des accès maîtrisés et sécurisés</b><span>Données de test ou anonymisées dès que possible, et accès retirés en fin de mission.</span></li>
+<li data-i="161"><b>Des interventions validées et contrôlées</b><span>Toute opération qui peut affecter vos systèmes en production est validée avec vous à l'avance.</span></li>
+<li data-i="162"><b>Confidentialité et protection des données</b><span>Vos informations restent confidentielles, et chaque intervention est tracée.</span></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="contact">
+<div class="env contact">
+<div>
+<div class="tete" style="margin-bottom:26px">
+<h2 data-i="163">Parlons de votre projet</h2>
+<p data-i="164">Décrivez-nous votre besoin en quelques lignes. Nous vous répondons pour convenir d'un premier échange, sans engagement.</p>
+</div>
+<ul class="promesses">
+<li data-i="165">Un premier échange de 30 minutes offert</li><li data-i="166">Une proposition écrite, avec un périmètre clair</li><li data-i="167">Réponse en français ou en anglais, sous deux jours ouvrés</li>
+</ul>
+</div>
+<form id="formulaire" novalidate="">
+<div class="deux">
+<div class="champ"><label for="nom" data-i="168">Prénom et nom <span class="req">*</span></label><input autocomplete="name" id="nom" name="nom" required=""/></div>
+<div class="champ"><label for="email" data-i="169">Email professionnel <span class="req">*</span></label><input autocomplete="email" id="email" name="email" required="" type="email"/></div>
+</div>
+<div class="deux">
+<div class="champ"><label for="entreprise" data-i="170">Entreprise <span class="req">*</span></label><input autocomplete="organization" id="entreprise" name="entreprise" required=""/></div>
+<div class="champ"><label for="besoin" data-i="171">Type de besoin</label>
+<select id="besoin" name="besoin"><option data-i="172">Audit</option><option data-i="173">Projet</option><option data-i="174">Développement</option><option data-i="175">Maintenance</option><option data-i="176">Conseil</option><option data-i="177">Autre</option></select>
+</div>
+</div>
+<div class="champ"><label for="message" data-i="178">Votre message</label><textarea id="message" name="message"></textarea></div>
+<div aria-hidden="true" class="piege"><label for="site_web" data-i="179">Ne pas remplir</label><input autocomplete="off" id="site_web" name="_honey" tabindex="-1"/></div>
+<label class="accord" for="accord"><input id="accord" name="accord" required="" type="checkbox"/> <span data-i="180">J'accepte que ces informations soient utilisées pour répondre à ma demande. Elles ne sont ni revendues ni partagées.</span></label>
+<button class="bouton plein" id="envoyer" type="submit" data-i="181">Envoyer ma demande</button>
+<div class="retour" hidden="" id="retour" role="status"></div>
+</form>
+</div>
+</section>
+</main>
+<footer>
+<div class="env">
+<span data-i="182">© 2026 LB Horizon · Conseil · Audit · Pilotage · Développement</span>
+<nav aria-label="Pied de page" data-i="183"><a href="#interventions">Nos interventions</a> <a href="#contact">Contact</a> <a href="mentions-legales.html">Mentions légales et confidentialité</a></nav>
+</div>
+</footer>
+<script>
+(function () {
+  // ---------- Langue : français ou anglais ----------
+  const EN = ["LB Horizon", "<a href=\"#interventions\">What we do</a> <a href=\"#offres\">Audits</a> <a href=\"#exemples\">Examples</a> <a href=\"#equipe\">About us</a>", "Contact us", "Consulting · Audit · Project management · Development", "Your projects and information systems, in good hands.", "We support companies in designing, managing and evolving their IT projects.", "From defining requirements to implementation, we bring our expertise to every stage: project management, information-system audit and optimisation, custom application development, integration and maintenance.", "Our approach combines technical expertise, business insight and hands-on support to design reliable, high-performing and lasting solutions.", "A team of experienced engineers, each with over 20 years of experience.", "<a class=\"bouton plein\" href=\"#contact\">Talk about your project</a> <a class=\"bouton ligne\" href=\"#interventions\">What we do</a>", "For French-speaking companies in Israel, France, Belgium, Switzerland and Luxembourg. Remote or on-site work, as needed.", "<b>Engagement: CRM evolution</b><span>Roadmap</span>", "<b>Current-state assessment</b><span>Existing setup analysed, <mark>14 areas for improvement</mark> identified</span>", "<b>Recommendations</b><span>Prioritised action plan, approved by management</span>", "<b>Project optimisation</b><span>Scope prioritised, schedule under control, <mark>budget kept</mark></span>", "<b>Management and acceptance testing</b><span>Vendor coordination, testing with users</span>", "<b>Go-live and follow-up</b><span>Rollout, training, maintenance</span>", "Illustrative example of an engagement supported end to end.", "The link between your business and technology", "A successful IT project rests on a sound understanding of business challenges, a clear view of the objectives and effective coordination between everyone involved.", "Our role is to bridge your teams, your needs and the technical solutions. We analyse your environment, identify opportunities for improvement and support you in your decisions.", "From initial thinking to implementation, we bring independent expertise, a global view and concrete deliverables.", "We work on a one-off basis or over the long term, alongside your teams.", "What we do", "Our main services, on their own or combined according to your needs.", "Project optimisation and management", "Your project needs fresh momentum to stay on schedule, on budget and on target.", "We review progress, risks and gaps, then propose a plan to regain a clear, well-controlled view: scope, priorities, schedule, organisation.", "Project leadership and management", "You want experienced project managers to lead your project.", "We run it for you: schedule, coordination of vendors and teams, budget tracking, acceptance testing, rollout and user training.", "System audit and optimisation", "You want a clear, independent view of your system before making decisions.", "Audits of databases, Salesforce CRM and applications: we analyse what exists, qualify the findings and deliver a prioritised action plan.", "Project design and scoping", "You are launching a new project and want to build it on solid foundations.", "Requirements gathering, functional specifications, choice of solution or vendor, effort and risk estimates.", "Data migration and protection", "You are preparing a change of tool, database or vendor.", "A prepared, secure migration: data-flow analysis, data preparation and checks, controlled cut-over and guaranteed consistency between the old and new systems.", "Development and innovation", "You need an application, an internal tool or a prototype.", "Web applications in Python and Django, SQL procedures, integrations between software. A POC in 2 to 4 weeks, an MVP in 6 to 12 weeks.", "Application maintenance and evolution", "You want reliable, high-performing applications that evolve with your needs.", "Corrective and evolutive maintenance, user support, incident resolution and performance monitoring, under a monthly contract.", "When to call on us", "At every stage in the life of your projects and information systems, we provide the expertise and support you need.", "You want to optimise the management of an IT project.", "You are looking for independent expertise to assess your information system.", "You want to evolve your CRM or ERP.", "You are preparing a migration or modernisation of your applications.", "You want to improve the performance and reliability of your databases.", "You need support to develop a specific application.", "You want to strengthen your teams with experienced skills on a one-off basis.", "You are looking for a partner to maintain and evolve your applications.", "Our audits in detail", "A clear, independent view of your information system.", "We carry out technical and functional audits to assess your applications, databases and business tools. Each engagement identifies strengths, areas for improvement and optimisation opportunities, then sets out a concrete, prioritised roadmap.", "Our recommendations are designed to be put to use directly by your teams or implemented with our support.", "A", "Database audit", "For applications running on PostgreSQL, SQL Server or Oracle.", "<b>Deliverables:</b> report, risk map, qualified areas for improvement, costed optimisation plan.", "Structure and data model", "Data quality: duplicates, inconsistencies, missing values", "Performance: queries, indexes, execution plans", "Security and governance: accounts, privileges, backups", "Migrations and data flows (ETL)", "B", "Salesforce and CRM audit", "For teams who want to evolve and optimise their CRM.", "<b>Deliverables:</b> diagnosis, areas for improvement, compliance or optimisation plan.", "Configuration, profiles, roles and permissions", "Workflows, flows and automations", "Sales data quality", "Pipeline, KPIs and user adoption", "Licences and under-used features", "C", "Application and information-system audit", "To get a clear view of an application before evolving or migrating it.", "<b>Deliverables:</b> technical report, identified technical debt, modernisation roadmap.", "Architecture and code review", "Configuration, access and secrets management", "Backups and disaster recovery", "Technology choices and migration readiness", "Three audit packages", "Every audit is offered at a fixed price, with scope and cost known upfront.", "Get a first view of your environment.", "Initial diagnosis", "Scoping interview", "First analysis of the scope", "Main issues identified", "Summary debrief", "Our complete support", "Get a detailed analysis to make the right decisions.", "In-depth audit", "Detailed technical analysis", "Findings identified and qualified", "Full report and ranked recommendations", "Debrief meeting", "Benefit from support all the way to implementing the improvements.", "Audit and support", "The in-depth audit", "Improvement plan", "Implementation support", "Verification of results", "<b>Fixed price</b><span>A defined scope, identified deliverables and a controlled budget.</span>", "<b>Time and materials</b><span>Experienced skills deployed as you need them, one-off or over the long term.</span>", "<b>Subscription</b><span>Regular support for the maintenance, assistance and follow-up of your applications.</span>", "Example engagements", "Engagements representative of our work, presented without any confidential information.", "Salesforce audit", "Review of profiles and permissions, automations and sales data quality, followed by a prioritised optimisation plan.", "<b>Target outcome:</b> reliable data, well-controlled permissions and a tool better adopted by teams.", "SQL optimisation", "Analysis of queries and execution plans, review of indexes and procedures on a PostgreSQL, SQL Server or Oracle database.", "<b>Target outcome:</b> much faster response times and a more stable database.", "Django development", "Design and development of a web business application in Python and Django, from prototype to production.", "<b>Target outcome:</b> simpler processes and centralised data.", "Migration management", "Preparation, checks and cut-over of data to a new tool, with coordination of vendors and users.", "<b>Target outcome:</b> a controlled cut-over, consistent data and reduced risk.", "How we work", "A structured, pragmatic methodology, tailored to each engagement, from initial analysis to implementing the solutions.", "Understand", "Your goals, constraints and organisation: scope, deliverables and schedule are agreed together.", "Analyse", "Interviews, documents, systems: we establish a factual current-state assessment and identify the key issues.", "Recommend", "Ranked recommendations and a realistic action plan, presented to your decision-makers.", "Support", "Management, implementation, verification of results and long-term follow-up, if you wish.", "Our areas of expertise", "We work on existing environments and know how to make different technologies work together.", "Databases and architecture", "<span>PostgreSQL</span><span>SQL Server</span><span>Oracle</span><span>SQL and PL/SQL</span>", "CRM and ERP", "<span>Salesforce</span><span>Retail ERP</span><span>Business-software integration</span>", "Software development", "<span>Python</span><span>Django</span><span>Web and SaaS applications</span>", "Data and business intelligence", "<span>ETL</span><span>QlikView</span><span>Reporting and data management</span>", "IT project management", "<span>Scoping</span><span>Coordination</span><span>Management</span><span>Rollout</span><span>Support</span>", "About us", "A team of experienced engineers serving your IT projects.", "We bring together complementary skills in software engineering, project management, databases and information systems. With over 20 years of experience each, we have supported companies in a wide range of sectors: healthcare, retail, finance and services.", "Our strength lies in dual expertise: strong technical command and a practical understanding of companies' operational challenges. We also work with a network of qualified developers and specialists to bring in the right skills for each project.", "MB", "Moïse Berrebi", "IS project manager, databases and applications", "Over 20 years of IT projects in healthcare and retail: project and rollout management, functional analysis, ERP and Salesforce CRM implementation, databases and BI. Python and Django developer.", "EL", "Eliahou Lasry", "Software engineering and development", "Over 30 years of experience in software engineering, including the last 11 at Séphira, now part of the Orisha group, a software publisher for healthcare professionals. Specialist in designing and developing complex software solutions, with an unwavering focus on reliability, performance and innovation.", "Our commitments", "<b>A transparent framework</b><span>Scope, authorisations, responsibilities and data-handling rules defined by contract.</span>", "<b>Controlled, secure access</b><span>Test or anonymised data whenever possible, and access removed at the end of the engagement.</span>", "<b>Approved, controlled operations</b><span>Any operation that may affect your production systems is agreed with you in advance.</span>", "<b>Confidentiality and data protection</b><span>Your information stays confidential, and every intervention is logged.</span>", "Let's talk about your project", "Describe your needs in a few lines. We will get back to you to arrange a first conversation, with no commitment.", "A free first 30-minute conversation", "A written proposal, with a clear scope", "Reply in French or English, within two business days", "First and last name <span class=\"req\">*</span>", "Business email <span class=\"req\">*</span>", "Company <span class=\"req\">*</span>", "Type of need", "Audit", "Project", "Development", "Maintenance", "Consulting", "Other", "Your message", "Do not fill in", "I agree that this information may be used to respond to my request. It is never sold or shared.", "Send my request", "© 2026 LB Horizon · Consulting · Audit · Project management · Development", "<a href=\"#interventions\">What we do</a> <a href=\"#contact\">Contact</a> <a href=\"mentions-legales.html#en\">Legal notice and privacy</a>"];
+  const META = {
+    fr: { titre: document.title, desc: document.querySelector('meta[name="description"]').content },
+    en: { titre: "LB Horizon – IT consulting, audit and project management", desc: "IT expertise for your projects: consulting, information-system audit and optimisation, project management, development and maintenance. A team of experienced engineers, in Israel, France, Belgium, Switzerland and Luxembourg." }
+  };
+  const blocs = Array.from(document.querySelectorAll("[data-i]"));
+  const FR = blocs.map(el => el.innerHTML);
+  let langue = "fr";
+  function appliquer(l) {
+    langue = l;
+    document.documentElement.lang = l;
+    blocs.forEach((el, k) => { el.innerHTML = l === "en" ? EN[+el.dataset.i] : FR[k]; });
+    document.title = META[l].titre;
+    document.querySelector('meta[name="description"]').content = META[l].desc;
+    document.querySelectorAll(".langue button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+    try { localStorage.setItem("langue", l); } catch (e) {}
+  }
+  document.querySelectorAll(".langue button").forEach(b => b.addEventListener("click", () => appliquer(b.dataset.lang)));
+  let depart = new URLSearchParams(location.search).get("lang");
+  if (!depart) { try { depart = localStorage.getItem("langue"); } catch (e) {} }
+  if (depart === "en") appliquer("en");
+
+  // Adresse de réception des demandes : à renseigner avant la mise en ligne.
+  const EMAIL_RECEPTION = "lbhorizon01@gmail.com";
+  const form = document.getElementById("formulaire");
+  const retour = document.getElementById("retour");
+  const bouton = document.getElementById("envoyer");
+  const enLigne = location.hostname && !/claude|localhost|127\.0\.0\.1|usercontent/.test(location.hostname);
+  const afficher = (type, texte) => { retour.className = "retour " + type; retour.textContent = texte; retour.hidden = false; };
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    form.querySelectorAll(".erreur-champ").forEach(c => c.classList.remove("erreur-champ"));
+    const manque = [];
+    [["nom", "votre nom"], ["email", "votre email"], ["entreprise", "votre entreprise"]].forEach(([id, nom]) => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) { manque.push(nom); el.closest(".champ").classList.add("erreur-champ"); }
+    });
+    if (manque.length) return afficher("ko", langue === "en" ? "Please fill in the required fields." : "Il manque : " + manque.join(", ") + ".");
+    if (!form.accord.checked) return afficher("ko", langue === "en" ? "Please tick the consent box so we can reply." : "Cochez la case d'accord pour que nous puissions vous répondre.");
+    if (form._honey.value) return;
+    if (!enLigne || !EMAIL_RECEPTION) return afficher("ok", langue === "en" ? "Preview: the form is complete. Once the site is live, the request will arrive by email." : "Aperçu : le formulaire est complet. Une fois le site en ligne, la demande arrivera par email.");
+    bouton.disabled = true; bouton.textContent = langue === "en" ? "Sending…" : "Envoi en cours…";
+    try {
+      const r = await fetch(`https://formsubmit.co/ajax/${EMAIL_RECEPTION}`, {
+        method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ _subject: "Demande : " + form.besoin.value + " — " + form.entreprise.value.trim(), _template: "table",
+          Nom: form.nom.value.trim(), Email: form.email.value.trim(), Entreprise: form.entreprise.value.trim(),
+          Besoin: form.besoin.value, Message: form.message.value.trim() })
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && String(j.success) !== "false") { afficher("ok", langue === "en" ? "Thank you, your request has been sent. We will reply within two business days." : "Merci, votre demande est bien envoyée. Nous vous répondons sous deux jours ouvrés."); form.reset(); }
+      else afficher("ko", langue === "en" ? "Sending failed. Please try again shortly." : "L'envoi n'a pas fonctionné. Réessayez dans un instant.");
+    } catch { afficher("ko", langue === "en" ? "Sending failed. Please try again shortly." : "L'envoi n'a pas fonctionné. Réessayez dans un instant."); }
+    finally { bouton.disabled = false; bouton.textContent = langue === "en" ? "Send my request" : "Envoyer ma demande"; }
+  });
+})();
+</script>
+</body>
+</html>
